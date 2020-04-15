@@ -40,7 +40,8 @@ char *intToRoman(int num) {
 	char *three[10] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
 	char *four[10] = {"", "M", "MM", "MMM"};
 	int k = num;
-	char ret[20] = "";
+	char *ret = malloc(20);
+	memset(ret, 0, sizeof(ret));
 	int i=1;
 	Stack stack = malloc(sizeof(*stack));
 	stack->top = NULL;
@@ -69,11 +70,29 @@ char *intToRoman(int num) {
 		}
 		pop(stack);
 	}
-	char *str = malloc(strlen(ret)+1);
-    strcpy(str, ret);
-	return str;
+	return ret;
+}
+
+char *intToRoman2(int num) {
+	int val[13] = {0};
+	int div[13] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+	char *str[13] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+	char *ret = malloc(20);
+	memset(ret, 0, sizeof(ret));
+	for (int i=0; i<13; i++) {
+		val[i] = num/div[i];
+		num = num%div[i];
+	}
+	for (int i=0; i<13; i++) {
+		while(val[i]-- > 0) {
+			strcat(ret, str[i]);
+		}
+	}
+	return ret;
 }
 
 int main(int argc, char **argv) {
-	printf("%s\n", intToRoman(atoi(argv[1])));
+	int num = atoi(argv[1]);
+	printf("%s\n", intToRoman(num));
+	printf("%s\n", intToRoman2(num));
 }
